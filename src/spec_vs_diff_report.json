@@ -1,0 +1,73 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-07T09:04:36.011Z",
+  "summary": "Core app shell, routing, dashboards scaffolding, and class/student/attendance query hooks were added. However, the requested custom phone+password authentication (with secure password hashing and backend-enforced uniqueness/validation) does not appear to be implemented; the frontend auth flow relies on Internet Identity and profile checks instead.",
+  "missing_requirements": [
+    {
+      "id": "REQ-3",
+      "requirement": "Implement phone number + password sign up and log in for two roles (Teacher and Parent), including validation and secure password handling (store salted hash, never store plaintext passwords).",
+      "reason": "The backend user profile model contains no password or password hash fields, and the frontend login/sign-up flows do not verify passwords against backend state (login only checks that the entered phone matches the stored profile and role). This does not satisfy custom phone/password auth, uniqueness enforcement, or secure password storage.",
+      "evidence": [
+        "backend/main.mo (UserProfile has phoneNumber/role/name only; no password/hash/salt visible)",
+        "frontend/src/pages/auth/TeacherSignUpPage.tsx (collects password but only saves profile name/phone/role)",
+        "frontend/src/pages/auth/ParentSignUpPage.tsx (collects password but only saves profile name/phone/role)",
+        "frontend/src/pages/auth/TeacherLoginPage.tsx (does not validate password against backend; checks phone/profile/role)",
+        "frontend/src/pages/auth/ParentLoginPage.tsx (does not validate password against backend; checks phone/profile/role)",
+        "frontend/src/contexts/AuthContext.tsx (login() just stores phone/role locally; no password verification)"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Authentication is implemented using Internet Identity (third-party auth provider) rather than custom phone/password authentication within the app.",
+      "reason": "BuildRequest explicitly disallows third-party authentication providers and requires custom phone/password auth. The diff uses useInternetIdentity/AuthClient login flow and identity presence as a condition for being authenticated.",
+      "evidence": [
+        "frontend/src/hooks/useInternetIdentity.ts (uses @dfinity/auth-client / Internet Identity)",
+        "frontend/src/pages/auth/TeacherLoginPage.tsx (calls iiLogin())",
+        "frontend/src/pages/auth/ParentLoginPage.tsx (calls iiLogin())",
+        "frontend/src/contexts/AuthContext.tsx (isAuthenticated depends on identity)"
+      ]
+    },
+    {
+      "description": "Backend access-control/admin-secret initialization and authorization mixin added.",
+      "reason": "Access control/admin token initialization is not mentioned in the BuildRequest requirements and appears to be additional functionality beyond the requested app features.",
+      "evidence": [
+        "backend/main.mo (imports MixinAuthorization, AccessControl; permission checks)",
+        "frontend/src/hooks/useActor.ts (calls actor._initializeAccessControlWithSecret(adminToken))"
+      ]
+    }
+  ],
+  "confidence": 0.78,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AppLayout.tsx",
+    "frontend/src/components/RoleRouteGuard.tsx",
+    "frontend/src/contexts/AuthContext.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/polling.ts",
+    "frontend/src/lib/validation.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/AccessDeniedPage.tsx",
+    "frontend/src/pages/LandingPage.tsx",
+    "frontend/src/pages/auth/ParentLoginPage.tsx",
+    "frontend/src/pages/auth/ParentSignUpPage.tsx",
+    "frontend/src/pages/auth/TeacherLoginPage.tsx",
+    "frontend/src/pages/auth/TeacherSignUpPage.tsx",
+    "frontend/src/pages/parent/ParentDashboardPage.tsx",
+    "frontend/src/pages/teacher/ClassDetailPage.tsx",
+    "frontend/src/pages/teacher/TakeAttendancePage.tsx",
+    "frontend/src/pages/teacher/TeacherDashboardPage.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

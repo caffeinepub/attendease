@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Build ATTENDEASE, an e-attendance app with phone-number/password authentication for teachers and parents, teacher dashboards for managing classes/students and taking attendance, and parent views for attendance stats with updates when attendance is taken.",
+  "architectural_notes": [
+    "Support role-based access (teacher vs parent).",
+    "Link parent accounts to student records via phone number captured when teacher adds the student.",
+    "Attendance data model should support totals, absences, and percentage calculations, and per-class/per-date records."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- App logo mark with a clean attendance/check motif, warm neutral palette (attendease-logo.dim_512x512.png)\n- Wide hero banner illustration with teacher and parent silhouettes and a simple class checklist motif (attendease-hero.dim_1600x600.png)",
+  "existing_features": [
+    {
+      "id": "feature-create-the-attendease-app-shell-with-a-clear-landing-page-that-explains-two-roles-teacher-and-parent-and-provides-navigation-to-sign-up-and-log-in-for-each-role",
+      "title": "Create the ATTENDEASE app shell with a clear landing page that explains two roles (Teacher and Parent) and provides navigation to Sign Up and Log In for each role.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-phone-number-password-sign-up-and-log-in-for-two-roles-teacher-and-parent-including-validation-and-secure-password-handling-store-salted-hash-never-store-plaintext-passwords",
+      "title": "Implement phone number + password sign up and log in for two roles (Teacher and Parent), including validation and secure password handling (store salted hash, never store plaintext passwords).",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-after-login-route-users-to-role-specific-dashboards-teacher-dashboard-for-teachers-and-parent-dashboard-for-parents-protect-routes-so-users-cannot-access-the-other-role-s-pages",
+      "title": "After login, route users to role-specific dashboards: Teacher Dashboard for teachers and Parent Dashboard for parents; protect routes so users cannot access the other role’s pages.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-teacher-dashboard-allow-teachers-to-create-view-and-manage-classes-at-minimum-create-class-with-a-name-list-existing-classes",
+      "title": "Teacher Dashboard: allow teachers to create, view, and manage classes (at minimum: create class with a name; list existing classes).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-teacher-dashboard-within-a-selected-class-allow-teachers-to-add-and-manage-students-capturing-at-minimum-student-name-and-the-parent-phone-number-used-to-link-that-student-to-a-parent-account",
+      "title": "Teacher Dashboard: within a selected class, allow teachers to add and manage students, capturing at minimum: student name and the parent phone number used to link that student to a parent account.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-attendance-taking-flow-enable-teachers-to-select-a-class-and-date-mark-each-student-present-absent-and-submit-attendance-saving-should-be-idempotent-for-the-same-class-date-update-existing-record-instead-of-duplicating",
+      "title": "Attendance taking flow: enable teachers to select a class and date, mark each student Present/Absent, and submit attendance; saving should be idempotent for the same class+date (update existing record instead of duplicating).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-parent-dashboard-after-parent-login-show-the-list-of-students-linked-by-matching-the-parent-s-phone-number-to-students-stored-parent-phone-number-allow-selecting-a-student-to-view-attendance-metrics-attendance-percentage-total-sessions-recorded-total-present-and-total-absent",
+      "title": "Parent Dashboard: after parent login, show the list of students linked by matching the parent’s phone number to students’ stored parent phone number; allow selecting a student to view attendance metrics: attendance percentage, total sessions recorded, total present, and total absent.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-parents-can-see-attendance-updates-after-a-teacher-submits-attendance-by-automatically-refreshing-parent-views-on-a-short-interval-while-the-parent-dashboard-is-open-polling",
+      "title": "Ensure parents can see attendance updates after a teacher submits attendance by automatically refreshing parent views on a short interval while the parent dashboard is open (polling).",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-coherent-distinctive-visual-theme-for-attendease-colors-typography-spacing-and-component-styling-and-use-it-consistently-across-landing-auth-teacher-dashboard-attendance-and-parent-dashboard-screens-avoid-a-blue-purple-default-look",
+      "title": "Apply a coherent, distinctive visual theme for ATTENDEASE (colors, typography, spacing, and component styling) and use it consistently across landing, auth, teacher dashboard, attendance, and parent dashboard screens (avoid a blue/purple default look).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-include-static-image-assets-for-branding-and-render-them-in-the-frontend-from-static-files-do-not-serve-images-through-the-backend",
+      "title": "Generate and include static image assets for branding and render them in the frontend from static files (do not serve images through the backend).",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "App identity: create e-attendance app named 'ATTENDEASE'",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Authentication: teachers and parents can create accounts and log in using phone number + password",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Roles/portals: separate teacher and parent experiences after login",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Teacher dashboard: add/manage classes",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Teacher dashboard: add/manage students, including storing a parent phone number used to link parent login to the student",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Attendance taking: teachers can record attendance for students in a class",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Parent dashboard: view student attendance metrics (percentage, total attendance, absences, etc.)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Attendance updates: when a teacher takes attendance, parents can see updated attendance on their phone",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Implement backend data models and persistence for: users (teacher/parent), classes (owned by teacher), students (belonging to a class), and attendance records (per class session date, per student present/absent).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "ATTENDEASE",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

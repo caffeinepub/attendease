@@ -1,0 +1,361 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "ATTENDEASE frontend: role-based auth UX, dashboards, attendance, polling, and branding",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Create an ATTENDEASE app shell with landing page and clear Teacher/Parent navigation into sign up and log in flows.",
+      "acceptanceCriteria": [
+        "App name 'ATTENDEASE' is visible in the UI (header and/or landing page).",
+        "Landing page has distinct CTAs for Teacher and Parent authentication flows.",
+        "All user-facing text is in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the root app component with routing for landing and role-based auth pages (Teacher/Parent Sign Up + Log In) and wire shared layout (header). Use shadcn-ui composed components (e.g., Button/Card) for CTAs and layout. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AppLayout.tsx",
+          "operation": "create",
+          "description": "Create a shared layout with an ATTENDEASE header, primary navigation links, and a content container. Use shadcn-ui composed components for header/buttons/menus. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "create",
+          "description": "Implement a landing page that explains the two roles (Teacher and Parent) and provides distinct CTAs into the correct Sign Up / Log In routes for each role. Render the hero banner and logo assets (from frontend/public/assets/generated). Use shadcn-ui composed components for hero/CTA sections. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/auth/TeacherAuthPage.tsx",
+          "operation": "create",
+          "description": "Create a Teacher auth entry page that offers Sign Up and Log In actions with role context and English copy. Use shadcn-ui composed components for page structure. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/auth/ParentAuthPage.tsx",
+          "operation": "create",
+          "description": "Create a Parent auth entry page that offers Sign Up and Log In actions with role context and English copy. Use shadcn-ui composed components for page structure. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Implement phone number + password sign up and log in UX for Teacher and Parent, with validation and clear error handling.",
+      "acceptanceCriteria": [
+        "Teacher can sign up with phone number + password and then log in successfully.",
+        "Parent can sign up with phone number + password and then log in successfully.",
+        "Incorrect password prevents login with a clear English error message.",
+        "Phone number uniqueness is enforced per account (no duplicate accounts with same phone).",
+        "Passwords are not stored in plaintext in backend state."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Update the frontend backend interface typings to include the required backend capabilities for phone/password sign up and log in (and any returned session/auth payload needed by the UI). Keep types consistent with existing UserProfile and role concepts."
+        },
+        {
+          "path": "frontend/src/contexts/AuthContext.tsx",
+          "operation": "create",
+          "description": "Create an AuthContext to manage client-side auth state (current user role, phone number, and any session token/marker returned by backend), including persistence (e.g., localStorage) and logout that clears cached data (including React Query cache)."
+        },
+        {
+          "path": "frontend/src/lib/validation.ts",
+          "operation": "create",
+          "description": "Add shared input validation helpers for phone number and password (required fields, basic formatting rules, minimum password length) and English error messages."
+        },
+        {
+          "path": "frontend/src/lib/authApi.ts",
+          "operation": "create",
+          "description": "Add a thin API wrapper that calls the backend capabilities for sign up and log in and normalizes errors for UI display; ensure no plaintext password is stored client-side beyond the immediate request."
+        },
+        {
+          "path": "frontend/src/pages/auth/TeacherSignUpPage.tsx",
+          "operation": "create",
+          "description": "Implement Teacher sign up form (phone + password + confirm password as needed), validation, submit handling, and success navigation. Use shadcn-ui composed components for form fields, buttons, and alerts. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/auth/TeacherLoginPage.tsx",
+          "operation": "create",
+          "description": "Implement Teacher log in form (phone + password), validation, and error handling for incorrect credentials. Use shadcn-ui composed components for form fields, buttons, and alerts. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/auth/ParentSignUpPage.tsx",
+          "operation": "create",
+          "description": "Implement Parent sign up form (phone + password), validation, submit handling, and success navigation. Use shadcn-ui composed components for form fields, buttons, and alerts. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/auth/ParentLoginPage.tsx",
+          "operation": "create",
+          "description": "Implement Parent log in form (phone + password), validation, and error handling for incorrect credentials. Use shadcn-ui composed components for form fields, buttons, and alerts. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the new sign up and log in pages into the router, and connect successful authentication to role-based navigation (Teacher Dashboard vs Parent Dashboard)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Route users to role-specific dashboards after login and protect Teacher/Parent routes from cross-access.",
+      "acceptanceCriteria": [
+        "Teacher users see Teacher Dashboard after login.",
+        "Parent users see Parent Dashboard after login.",
+        "Direct navigation to a protected page redirects to login or shows an access-denied message."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/RoleRouteGuard.tsx",
+          "operation": "create",
+          "description": "Create a route guard wrapper that checks auth state and required role; if missing/incorrect, redirect to the appropriate login page or show an access-denied screen. Use shadcn-ui composed components for access-denied UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/AccessDeniedPage.tsx",
+          "operation": "create",
+          "description": "Create an English access-denied page explaining the user cannot access this area and providing navigation back to the correct login/dashboard. Use shadcn-ui composed components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/teacher/TeacherDashboardPage.tsx",
+          "operation": "create",
+          "description": "Create the Teacher Dashboard landing screen (overview + navigation to class management and attendance). Use shadcn-ui composed components for cards/sections. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/parent/ParentDashboardPage.tsx",
+          "operation": "create",
+          "description": "Create the Parent Dashboard landing screen (linked students list + metrics view). Use shadcn-ui composed components for lists/cards/metrics. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Protect Teacher and Parent routes using RoleRouteGuard and ensure post-login redirect goes to the correct dashboard."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Teacher Dashboard class management: create classes and list existing classes.",
+      "acceptanceCriteria": [
+        "Teacher can create a class with a required class name.",
+        "Teacher can see a list of their classes after creation.",
+        "Classes are persisted and still visible after refresh/re-login."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useTeacherClasses.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for fetching teacher classes and creating a new class, using the existing actor connection (useActor) and invalidating/refetching the class list after creation."
+        },
+        {
+          "path": "frontend/src/components/teacher/ClassList.tsx",
+          "operation": "create",
+          "description": "Create a ClassList component to render the teacher's classes with selection navigation. Use shadcn-ui composed components for list/card/table styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/teacher/CreateClassForm.tsx",
+          "operation": "create",
+          "description": "Create a CreateClassForm with required class name validation and submission state. Use shadcn-ui composed components for form controls and alerts. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/teacher/TeacherDashboardPage.tsx",
+          "operation": "modify",
+          "description": "Wire class creation and class listing into the Teacher Dashboard, including navigation to a selected class management view."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Add/ensure a Teacher route for class management (e.g., teacher/class/:classId) so class selection is navigable and not an orphan view."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Teacher class roster management: add students with name + parent phone number and view class roster.",
+      "acceptanceCriteria": [
+        "Teacher can add a student with required fields: student name and parent phone number.",
+        "Teacher can view the roster for a class.",
+        "Student records persist and reappear after refresh/re-login.",
+        "Parent phone number saved on the student record is retrievable by backend for parent-student linking."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useClassStudents.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for fetching class roster and adding a student to a class; ensure cache invalidation so the roster updates immediately after add."
+        },
+        {
+          "path": "frontend/src/components/teacher/AddStudentForm.tsx",
+          "operation": "create",
+          "description": "Create an AddStudentForm capturing required student name and parent phone number with validation and English errors. Use shadcn-ui composed components for form controls and alerts. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/teacher/StudentRoster.tsx",
+          "operation": "create",
+          "description": "Create a StudentRoster component showing student name and parent phone number (as entered) for the selected class. Use shadcn-ui composed components for list/table styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/teacher/ClassDetailPage.tsx",
+          "operation": "create",
+          "description": "Create a class detail page that shows roster and student add form for a selected class; include navigation to attendance taking for that class. Use shadcn-ui composed components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire ClassDetailPage into Teacher routes and ensure it is protected by teacher role guard."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Attendance taking flow: select class + date, mark each student present/absent, and submit updates for the same class+date.",
+      "acceptanceCriteria": [
+        "Teacher can open an attendance screen for a class and see the class roster.",
+        "Teacher can mark each student present/absent and submit.",
+        "Re-submitting attendance for the same class and date updates the saved results (no duplicates).",
+        "Attendance data persists and is visible after refresh/re-login."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useAttendance.ts",
+          "operation": "create",
+          "description": "Create hooks for fetching attendance for a class+date and submitting attendance for a class+date; ensure submit updates are reflected in UI by refetching/invalidation."
+        },
+        {
+          "path": "frontend/src/components/teacher/AttendanceForm.tsx",
+          "operation": "create",
+          "description": "Create an attendance form that renders the roster with Present/Absent toggles per student, a date picker/input, and a submit action. Use shadcn-ui composed components for controls (buttons, toggles, tables) and submission feedback. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/teacher/TakeAttendancePage.tsx",
+          "operation": "create",
+          "description": "Create the attendance-taking page for a class: choose date, load roster, mark statuses, submit, and display last saved state for the chosen date. Use shadcn-ui composed components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire TakeAttendancePage into Teacher routes (navigable from class detail/dashboard) and protect it with teacher role guard."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Parent Dashboard: show linked students and per-student attendance metrics (percentage, totals).",
+      "acceptanceCriteria": [
+        "Parent sees a list of linked students (may be across multiple classes/teachers if applicable).",
+        "For a selected student, the dashboard displays: attendance percentage, total sessions recorded, present count, absent count.",
+        "If no students are linked, parent sees a clear English empty state explaining what to do (e.g., ask teacher to add their phone number)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useMyStudents.ts",
+          "operation": "create",
+          "description": "Create a React Query hook to fetch the parent-linked students list from the backend and expose loading/empty/error states."
+        },
+        {
+          "path": "frontend/src/hooks/useStudentAttendanceMetrics.ts",
+          "operation": "create",
+          "description": "Create hooks/utilities to fetch a student's attendance history and compute metrics (total sessions, present, absent, percentage) for display."
+        },
+        {
+          "path": "frontend/src/components/parent/LinkedStudentsList.tsx",
+          "operation": "create",
+          "description": "Create a component to display the linked students list with selection UI and empty state copy. Use shadcn-ui composed components for lists/cards/empty state. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/parent/AttendanceMetricsCard.tsx",
+          "operation": "create",
+          "description": "Create a metrics display component showing attendance percentage, total sessions, total present, and total absent for a selected student. Use shadcn-ui composed components for cards/stat blocks. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/parent/ParentDashboardPage.tsx",
+          "operation": "modify",
+          "description": "Wire linked students list + selected student metrics into the Parent Dashboard and ensure an English empty state when no students are linked."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Ensure Parent Dashboard route is protected with parent role guard and is the post-login destination for parent users."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Automatically refresh parent attendance metrics while Parent Dashboard is open using polling, and stop polling on navigation away.",
+      "acceptanceCriteria": [
+        "Parent dashboard refetches linked students’ attendance metrics automatically without manual reload (e.g., periodic refresh while page is open).",
+        "After a teacher submits new attendance, the parent’s metrics update on the next refresh interval.",
+        "Polling interval is reasonable (not constant) and can be stopped when user navigates away from the dashboard."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/polling.ts",
+          "operation": "create",
+          "description": "Add a small helper to centralize polling intervals (e.g., a reasonable default in seconds) so it can be tuned consistently across parent views."
+        },
+        {
+          "path": "frontend/src/pages/parent/ParentDashboardPage.tsx",
+          "operation": "modify",
+          "description": "Enable polling for linked students and selected student attendance metrics while Parent Dashboard is mounted (e.g., via React Query refetchInterval) and ensure polling stops when navigating away/unmounting."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Apply a coherent, distinctive ATTENDEASE visual theme across all screens (not primarily blue/purple).",
+      "acceptanceCriteria": [
+        "UI has a consistent theme (header, buttons, forms, tables/cards).",
+        "Theme is not primarily blue/purple.",
+        "Teacher and Parent areas feel like the same product family with clear role differentiation."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Add global theme tokens and base styles (Tailwind + CSS variables) for a warm neutral palette (avoid blue/purple defaults), typography, spacing, and consistent component surfaces."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme extensions (colors/chart/surfaces if needed) to align with the warm neutral ATTENDEASE palette and ensure consistency across components."
+        },
+        {
+          "path": "frontend/src/components/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Apply the ATTENDEASE theme consistently in the shared layout (header styling, container spacing), and add clear role differentiation (e.g., subtle role badge/color accent) without switching product family."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Include generated static branding images and render them from static frontend files (no backend image fetching).",
+      "acceptanceCriteria": [
+        "Generated images are placed under frontend/public/assets/generated.",
+        "App displays the generated logo in the header/landing page.",
+        "No backend endpoints are used to fetch these images."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/attendease-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated ATTENDEASE logo mark image asset as a static file at frontend/public/assets/generated/attendease-logo.dim_512x512.png."
+        },
+        {
+          "path": "frontend/public/assets/generated/attendease-hero.dim_1600x600.png",
+          "operation": "create",
+          "description": "Add the generated ATTENDEASE wide hero banner image asset as a static file at frontend/public/assets/generated/attendease-hero.dim_1600x600.png."
+        },
+        {
+          "path": "frontend/src/components/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Render the static logo image from frontend/public/assets/generated/attendease-logo.dim_512x512.png in the header (no backend fetching). Use shadcn-ui composed components where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/LandingPage.tsx",
+          "operation": "modify",
+          "description": "Render the static hero image from frontend/public/assets/generated/attendease-hero.dim_1600x600.png and the logo from frontend/public/assets/generated/attendease-logo.dim_512x512.png on the landing page (no backend fetching). Use shadcn-ui composed components for layout. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

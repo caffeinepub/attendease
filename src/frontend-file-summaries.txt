@@ -1,0 +1,21 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, defining all routes for landing, teacher/parent auth flows, dashboards, class management, and attendance pages with role-based guards.",
+  "frontend/src/contexts/AuthContext.tsx": "Authentication context provider managing user profile state, login/logout actions, and localStorage persistence for the current authenticated user.",
+  "frontend/src/components/AppLayout.tsx": "Shared layout component with ATTENDEASE header displaying logo, role badge, user dropdown menu, and footer with caffeine.ai attribution.",
+  "frontend/src/components/RoleRouteGuard.tsx": "Route protection component that redirects unauthenticated users to login and prevents cross-role access by checking user role against required role.",
+  "frontend/src/pages/LandingPage.tsx": "Landing page with hero image, ATTENDEASE branding, role-specific CTAs for teachers and parents, feature highlights, and how-it-works section.",
+  "frontend/src/pages/AccessDeniedPage.tsx": "Access denied page displayed when users attempt to access routes they don't have permission for, with navigation options back to appropriate areas.",
+  "frontend/src/pages/auth/TeacherSignUpPage.tsx": "Teacher sign-up form with name, phone number, and password fields, validation, Internet Identity integration, and profile creation.",
+  "frontend/src/pages/auth/TeacherLoginPage.tsx": "Teacher login form with phone number and password validation, Internet Identity authentication, and role verification before dashboard access.",
+  "frontend/src/pages/auth/ParentSignUpPage.tsx": "Parent sign-up form with name, phone number, and password fields, validation, Internet Identity integration, and profile creation with parent role.",
+  "frontend/src/pages/auth/ParentLoginPage.tsx": "Parent login form with phone number and password validation, Internet Identity authentication, and role verification before dashboard access.",
+  "frontend/src/pages/teacher/TeacherDashboardPage.tsx": "Teacher dashboard displaying class statistics, class list with navigation to details and attendance using type-safe routing with params object, and dialog for creating new classes.",
+  "frontend/src/pages/teacher/ClassDetailPage.tsx": "Class detail page showing student roster table, statistics, and dialog for adding students with name and parent phone number, using type-safe routing with params object for navigation.",
+  "frontend/src/pages/teacher/TakeAttendancePage.tsx": "Attendance taking interface with date selector, student checklist for marking present/absent, and save functionality with existing attendance loading, using type-safe routing with params object for navigation.",
+  "frontend/src/pages/parent/ParentDashboardPage.tsx": "Parent dashboard with student selector, attendance metrics cards (percentage, total sessions, present, absent), attendance history list, and automatic polling for updates.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations including profile management, class CRUD, student management, attendance taking/fetching, with proper cache invalidation.",
+  "frontend/src/lib/validation.ts": "Input validation helper functions for phone numbers (minimum 10 digits) and passwords (minimum 6 characters) with English error messages.",
+  "frontend/src/lib/polling.ts": "Centralized polling interval constant (10 seconds) for parent dashboard automatic refresh functionality.",
+  "frontend/src/index.css": "Global styles with warm neutral OKLCH color palette (avoiding blue/purple), custom CSS variables for light and dark modes, and base typography.",
+  "frontend/tailwind.config.js": "Tailwind configuration with extended color tokens matching the warm neutral theme, Inter font family, and custom border radius values."
+}

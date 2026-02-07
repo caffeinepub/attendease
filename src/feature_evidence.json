@@ -1,0 +1,215 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-the-attendease-app-shell-with-a-clear-landing-page-that-explains-two-roles-teacher-and-parent-and-provides-navigation-to-sign-up-and-log-in-for-each-role",
+      "featureTitle": "Create the ATTENDEASE app shell with a clear landing page that explains two roles (Teacher and Parent) and provides navigation to Sign Up and Log In for each role.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AppLayout.tsx",
+        "frontend/src/pages/LandingPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-phone-number-password-sign-up-and-log-in-for-two-roles-teacher-and-parent-including-validation-and-secure-password-handling-store-salted-hash-never-store-plaintext-passwords",
+      "featureTitle": "Implement phone number + password sign up and log in for two roles (Teacher and Parent), including validation and secure password handling (store salted hash, never store plaintext passwords).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/contexts/AuthContext.tsx",
+        "frontend/src/lib/validation.ts",
+        "frontend/src/pages/auth/ParentLoginPage.tsx",
+        "frontend/src/pages/auth/ParentSignUpPage.tsx",
+        "frontend/src/pages/auth/TeacherLoginPage.tsx",
+        "frontend/src/pages/auth/TeacherSignUpPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-after-login-route-users-to-role-specific-dashboards-teacher-dashboard-for-teachers-and-parent-dashboard-for-parents-protect-routes-so-users-cannot-access-the-other-role-s-pages",
+      "featureTitle": "After login, route users to role-specific dashboards: Teacher Dashboard for teachers and Parent Dashboard for parents; protect routes so users cannot access the other role’s pages.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/RoleRouteGuard.tsx",
+        "frontend/src/pages/AccessDeniedPage.tsx",
+        "frontend/src/pages/parent/ParentDashboardPage.tsx",
+        "frontend/src/pages/teacher/TeacherDashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-teacher-dashboard-allow-teachers-to-create-view-and-manage-classes-at-minimum-create-class-with-a-name-list-existing-classes",
+      "featureTitle": "Teacher Dashboard: allow teachers to create, view, and manage classes (at minimum: create class with a name; list existing classes).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/teacher/TeacherDashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-teacher-dashboard-within-a-selected-class-allow-teachers-to-add-and-manage-students-capturing-at-minimum-student-name-and-the-parent-phone-number-used-to-link-that-student-to-a-parent-account",
+      "featureTitle": "Teacher Dashboard: within a selected class, allow teachers to add and manage students, capturing at minimum: student name and the parent phone number used to link that student to a parent account.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/teacher/ClassDetailPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-attendance-taking-flow-enable-teachers-to-select-a-class-and-date-mark-each-student-present-absent-and-submit-attendance-saving-should-be-idempotent-for-the-same-class-date-update-existing-record-instead-of-duplicating",
+      "featureTitle": "Attendance taking flow: enable teachers to select a class and date, mark each student Present/Absent, and submit attendance; saving should be idempotent for the same class+date (update existing record instead of duplicating).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/teacher/TakeAttendancePage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-parent-dashboard-after-parent-login-show-the-list-of-students-linked-by-matching-the-parent-s-phone-number-to-students-stored-parent-phone-number-allow-selecting-a-student-to-view-attendance-metrics-attendance-percentage-total-sessions-recorded-total-present-and-total-absent",
+      "featureTitle": "Parent Dashboard: after parent login, show the list of students linked by matching the parent’s phone number to students’ stored parent phone number; allow selecting a student to view attendance metrics: attendance percentage, total sessions recorded, total present, and total absent.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/parent/ParentDashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-parents-can-see-attendance-updates-after-a-teacher-submits-attendance-by-automatically-refreshing-parent-views-on-a-short-interval-while-the-parent-dashboard-is-open-polling",
+      "featureTitle": "Ensure parents can see attendance updates after a teacher submits attendance by automatically refreshing parent views on a short interval while the parent dashboard is open (polling).",
+      "files": [
+        "frontend/src/lib/polling.ts",
+        "frontend/src/pages/parent/ParentDashboardPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-coherent-distinctive-visual-theme-for-attendease-colors-typography-spacing-and-component-styling-and-use-it-consistently-across-landing-auth-teacher-dashboard-attendance-and-parent-dashboard-screens-avoid-a-blue-purple-default-look",
+      "featureTitle": "Apply a coherent, distinctive visual theme for ATTENDEASE (colors, typography, spacing, and component styling) and use it consistently across landing, auth, teacher dashboard, attendance, and parent dashboard screens (avoid a blue/purple default look).",
+      "files": [
+        "frontend/src/components/AppLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-generate-and-include-static-image-assets-for-branding-and-render-them-in-the-frontend-from-static-files-do-not-serve-images-through-the-backend",
+      "featureTitle": "Generate and include static image assets for branding and render them in the frontend from static files (do not serve images through the backend).",
+      "files": [
+        "frontend/src/components/AppLayout.tsx",
+        "frontend/src/pages/LandingPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

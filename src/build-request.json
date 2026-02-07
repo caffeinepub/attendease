@@ -1,0 +1,247 @@
+{
+  "kind": "build_request",
+  "title": "ATTENDEASE: Phone/password auth for teachers & parents, class/student management, and attendance tracking with parent stats",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Create the ATTENDEASE app shell with a clear landing page that explains two roles (Teacher and Parent) and provides navigation to Sign Up and Log In for each role.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Build me a e attendance app called 'ATTENDEASE' where teachers and students can create account and login using their phone number and password... teachers or parents"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App name 'ATTENDEASE' is visible in the UI (header and/or landing page).",
+        "Landing page has distinct CTAs for Teacher and Parent authentication flows.",
+        "All user-facing text is in English."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement backend data models and persistence for: users (teacher/parent), classes (owned by teacher), students (belonging to a class), and attendance records (per class session date, per student present/absent).",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "when teacher login teacher can add classes and students in the teachers dashboard",
+          "when teacher take the attendance parents can see the update on their phone"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend stores teacher and parent accounts with role information.",
+        "Backend stores classes linked to a teacher.",
+        "Backend stores students linked to a class and containing a parent phone number for linking.",
+        "Backend stores attendance for a class by date with per-student present/absent status.",
+        "All data is served from a single Motoko actor."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement phone number + password sign up and log in for two roles (Teacher and Parent), including validation and secure password handling (store salted hash, never store plaintext passwords).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "teachers and students can create account and login using their phone number and password they created as teachers or parents"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Teacher can sign up with phone number + password and then log in successfully.",
+        "Parent can sign up with phone number + password and then log in successfully.",
+        "Incorrect password prevents login with a clear English error message.",
+        "Phone number uniqueness is enforced per account (no duplicate accounts with same phone).",
+        "Passwords are not stored in plaintext in backend state."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "After login, route users to role-specific dashboards: Teacher Dashboard for teachers and Parent Dashboard for parents; protect routes so users cannot access the other role’s pages.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "when teacher login... teachers dashboard",
+          "parents can login... and parents can view their students attendance percentage"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Teacher users see Teacher Dashboard after login.",
+        "Parent users see Parent Dashboard after login.",
+        "Direct navigation to a protected page redirects to login or shows an access-denied message."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Teacher Dashboard: allow teachers to create, view, and manage classes (at minimum: create class with a name; list existing classes).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "teacher can add classes"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Teacher can create a class with a required class name.",
+        "Teacher can see a list of their classes after creation.",
+        "Classes are persisted and still visible after refresh/re-login."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Teacher Dashboard: within a selected class, allow teachers to add and manage students, capturing at minimum: student name and the parent phone number used to link that student to a parent account.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "teacher can add classes and students",
+          "parents can login with with the number that teacher used to add that student"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Teacher can add a student with required fields: student name and parent phone number.",
+        "Teacher can view the roster for a class.",
+        "Student records persist and reappear after refresh/re-login.",
+        "Parent phone number saved on the student record is retrievable by backend for parent-student linking."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Attendance taking flow: enable teachers to select a class and date, mark each student Present/Absent, and submit attendance; saving should be idempotent for the same class+date (update existing record instead of duplicating).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "when teacher take the attendance"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Teacher can open an attendance screen for a class and see the class roster.",
+        "Teacher can mark each student present/absent and submit.",
+        "Re-submitting attendance for the same class and date updates the saved results (no duplicates).",
+        "Attendance data persists and is visible after refresh/re-login."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Parent Dashboard: after parent login, show the list of students linked by matching the parent’s phone number to students’ stored parent phone number; allow selecting a student to view attendance metrics: attendance percentage, total sessions recorded, total present, and total absent.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "parents can view their students attendance percentage total attendance absence etc in the app"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Parent sees a list of linked students (may be across multiple classes/teachers if applicable).",
+        "For a selected student, the dashboard displays: attendance percentage, total sessions recorded, present count, absent count.",
+        "If no students are linked, parent sees a clear English empty state explaining what to do (e.g., ask teacher to add their phone number)."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Ensure parents can see attendance updates after a teacher submits attendance by automatically refreshing parent views on a short interval while the parent dashboard is open (polling).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "when teacher take the attendance parents can see the update on their phone"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Parent dashboard refetches linked students’ attendance metrics automatically without manual reload (e.g., periodic refresh while page is open).",
+        "After a teacher submits new attendance, the parent’s metrics update on the next refresh interval.",
+        "Polling interval is reasonable (not constant) and can be stopped when user navigates away from the dashboard."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Apply a coherent, distinctive visual theme for ATTENDEASE (colors, typography, spacing, and component styling) and use it consistently across landing, auth, teacher dashboard, attendance, and parent dashboard screens (avoid a blue/purple default look).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Build me a e attendance app called 'ATTENDEASE'"
+        ]
+      },
+      "acceptanceCriteria": [
+        "UI has a consistent theme (header, buttons, forms, tables/cards).",
+        "Theme is not primarily blue/purple.",
+        "Teacher and Parent areas feel like the same product family with clear role differentiation."
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Generate and include static image assets for branding and render them in the frontend from static files (do not serve images through the backend).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Build me a e attendance app called 'ATTENDEASE'"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images are placed under frontend/public/assets/generated.",
+        "App displays the generated logo in the header/landing page.",
+        "No backend endpoints are used to fetch these images."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (no multi-canister/microservices).",
+    "Do not modify any files under frontend/src/components/ui (compose them instead).",
+    "Do not modify frontend immutable hook files (frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts) or frontend/src/main.tsx; implement app logic in other files.",
+    "No third-party authentication providers; implement custom phone/password auth within the app.",
+    "No WebSockets/real-time chat; use polling/refresh for updates."
+  ],
+  "nonGoals": [
+    "SMS/OTP phone verification or sending text messages.",
+    "Biometric login or passwordless authentication.",
+    "Offline-first mobile app behavior (this is a web app).",
+    "Advanced reporting (exports, PDFs) beyond basic attendance stats requested.",
+    "Student self-login portal (not requested explicitly; focus on teacher + parent roles)."
+  ],
+  "imageRequirements": {
+    "required": [
+      "App logo mark with a clean attendance/check motif, warm neutral palette (attendease-logo.dim_512x512.png)",
+      "Wide hero banner illustration with teacher and parent silhouettes and a simple class checklist motif (attendease-hero.dim_1600x600.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [
+      "Use English for user-facing UI text"
+    ],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}
